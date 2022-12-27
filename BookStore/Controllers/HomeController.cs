@@ -1,4 +1,6 @@
-﻿using BookStore.Models;
+﻿using BookStore.Data;
+using BookStore.Data.Data;
+using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
