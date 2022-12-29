@@ -1,7 +1,7 @@
-﻿@model BookStore.Data.Models.Category
+﻿@model BookStore.Data.Models.CoverType
 
-@{ 
-    var title = "Create Category";
+@{
+    var title = "Create Covert type";
 }
 
 <form method="post">
@@ -9,7 +9,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (Model.Id != 0)
         {
-            title = "Edit Category";
+            title = "Edit Cover type";
         }
         <div class="col-12 border-bottom">
             <h2 class="text-primary">@title</h2>
@@ -30,7 +30,7 @@
                         @if (Model.Id != 0)
                         {
                             <div class="col">
-                                <button type="submit" class="btn btn-primary form-control"  asp-route-id="@Model.Id">Update</button>
+                                <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Update</button>
                             </div>
                             <div class="col">
                                 <a asp-action="Index" class="btn btn-success form-control">Back to list</a>
@@ -53,6 +53,6 @@
 </form>
 
 
-@section Scripts{ 
-    <partial name="_ValidationScriptsPartial"/>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
 }

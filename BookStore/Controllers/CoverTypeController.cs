@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Controllers
 {
-    public class CategoryController : Controller
+    public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CoverTypeController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -20,50 +20,50 @@ namespace BookStore.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            var category = new Category();
+            var coverType = new CoverType();
             if (id is null)
             {
                 //This is create
-                return View(category);
+                return View(coverType);
             }
-            category = _unitOfWork.Category.Get(id.GetValueOrDefault());
-            if (category is null)
+            coverType = _unitOfWork.CoverType.Get(id.GetValueOrDefault());
+            if (coverType is null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(coverType);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Category category)
+        public IActionResult Upsert(CoverType coverType)
         {
             if (ModelState.IsValid)
             {
-                if (category.Id == 0)
+                if (coverType.Id == 0)
                 {
-                    _unitOfWork.Category.Add(category);
+                    _unitOfWork.CoverType.Add(coverType);
                 }
                 else 
                 {
-                    _unitOfWork.Category.Update(category);
+                    _unitOfWork.CoverType.Update(coverType);
                 }
                 _unitOfWork.Save();
 
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(coverType);
         }
 
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var categoryToDelete = _unitOfWork.Category.Get(id);
-            if (categoryToDelete is not null)
+            var coverTypeToDelete = _unitOfWork.CoverType.Get(id);
+            if (coverTypeToDelete is not null)
             {
-                _unitOfWork.Category.Remove(categoryToDelete);
+                _unitOfWork.CoverType.Remove(coverTypeToDelete);
                 _unitOfWork.Save();
                 return Json( new { success = true, message = "Delete Successful" });
             }
@@ -75,9 +75,9 @@ namespace BookStore.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var categoris = _unitOfWork.Category.GetAll();
+            var coverTypes = _unitOfWork.CoverType.GetAll();
 
-            return Json(new { data = categoris });
+            return Json(new { data = coverTypes });
         }
 
         #endregion

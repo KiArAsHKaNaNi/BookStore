@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Data.Models
 {
-    public class Category
+    public class CoverType
     {
         [Key]
         public int Id { get; set; }

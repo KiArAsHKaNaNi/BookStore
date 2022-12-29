@@ -16,9 +16,12 @@ namespace BookStore.Data.Repository
         {
             _context = context;
             Category = new CategoryRepository(context);
+            CoverType = new CoverTypeRepository(context);
         }
 
         public ICategoryRepository Category { get; private set; }
+
+        public ICoverTypeRepository CoverType { get; private set; }
 
         public void Dispose()
         {
