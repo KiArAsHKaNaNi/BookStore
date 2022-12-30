@@ -1,6 +1,9 @@
 ﻿using BookStore.Data.Models;
 using BookStore.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using BookStore.Data.ViewModels;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookStore.Controllers
 {
@@ -20,19 +23,33 @@ namespace BookStore.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            var product = new Product();
+            var productViewModel = new ProductViewModel()
+            {
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
+                CoverTypeList = _unitOfWork.CoverType.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+            };
             if (id is null)
             {
-                //This is create
-                return View(product);
+                return View(productViewModel);
             }
-            product = _unitOfWork.Product.Get(id.GetValueOrDefault());
-            if (product is null)
+
+            productViewModel.Product = _unitOfWork.Product.Get(id.GetValueOrDefault());
+            if (id is null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(productViewModel);
+
         }
 
 
