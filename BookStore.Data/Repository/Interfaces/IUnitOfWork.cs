@@ -12,6 +12,8 @@ namespace BookStore.Data.Repository.Interfaces
 
         ICoverTypeRepository CoverType { get; }
 
+        IProductRepository Product { get; }
+
         void Save();
 
     }
