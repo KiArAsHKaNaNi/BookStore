@@ -3,12 +3,17 @@
 @{
     ViewData["Title"] = "Upsert";
     var title = "Create Product";
+    var imagePath = $"~/images/product/{Model.Product.ImageUrl}";
+    Console.WriteLine();
 }
 
 
 <form method="post" enctype="multipart/form-data">
     <div class="row p-3 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="Product.Id" />
+        <input asp-for="Product.ImageUrl" hidden />
 
         @if (Model.Product.Id != 0)
         {
@@ -137,7 +142,7 @@
                     else
                     {
                         <div class="col">
-                            <button type="submit" class="btn btn-primary form-control">Create</button>
+                            <button type="submit" onclick="return validateInput()" class="btn btn-primary form-control">Create</button>
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success form-control">Back to list</a>
@@ -153,8 +158,31 @@
         @if (Model.Product.Id != 0)
         {
             <div class="col-3 offset-1 pt-4">
-                <img src="@Model.Product.ImageUrl"  style="width:100%; 5px; border: 1px solid #bbb9b9" />
+                <img src="@imagePath" asp-append-version="true" style="width: 100%; border-radius: 5px 5px; border: 1px solid #bbb9b9" />
             </div>
         }
     </div>
 </form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function validateInput() {
+            if (document.getElementById("uploadBox").value === "") {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Please select an image',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                return false;
+            }
+            return true;
+        }
+
+
+
+    </script>
+}

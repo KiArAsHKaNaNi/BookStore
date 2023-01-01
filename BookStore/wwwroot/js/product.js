@@ -14,7 +14,7 @@ function loadDataTable() {
             { "data": "isbn", "width": "15%" },
             { "data": "price", "width": "15%" },
             { "data": "author", "width": "15%" },
-            { "data": "category.name", "width": "15%" },
+            { "data": 'category.name', "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {
@@ -102,7 +102,13 @@ function Delete(url) {
                         })
                         dataTable.ajax.reload();
                     } else {
-                        toastr.error(data.message);
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                     }
                 }
 

@@ -98,7 +98,13 @@ function Delete(url) {
                         })
                         dataTable.ajax.reload();
                     } else {
-                        toastr.error(data.message);
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                     }
                 }
 
