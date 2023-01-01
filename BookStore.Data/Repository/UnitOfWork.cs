@@ -18,6 +18,8 @@ namespace BookStore.Data.Repository
             Category = new CategoryRepository(context);
             CoverType = new CoverTypeRepository(context);
             Product = new ProductRepository(context);
+            Company = new CompanyRepository(context);
+
         }
 
         public ICategoryRepository Category { get; private set; }
@@ -26,6 +28,7 @@ namespace BookStore.Data.Repository
 
         public IProductRepository Product { get; private set; }
 
+        public ICompanyRepository Company { get; private set; }
         public void Dispose()
         {
             _context.Dispose();
