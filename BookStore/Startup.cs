@@ -1,5 +1,6 @@
 
 using BookStore.Data.Data;
+using BookStore.Data.Models;
 using BookStore.Data.Repository;
 using BookStore.Data.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +37,7 @@ namespace BookStore
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
         }
