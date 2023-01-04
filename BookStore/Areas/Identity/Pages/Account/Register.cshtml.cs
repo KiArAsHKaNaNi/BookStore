@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations.Schema;
 using BookStore.StaticDetails;
+using BookStore.Data.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookStore.Areas.Identity.Pages.Account
 {
@@ -27,19 +29,22 @@ namespace BookStore.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
         }
 
         [BindProperty]
@@ -77,11 +82,30 @@ namespace BookStore.Areas.Identity.Pages.Account
             public int? CompanyId { get; set; }
 
             public string Role { get; set; }
+
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
+
+            public IEnumerable<SelectListItem> RoleList { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+
+            Input = new InputModel
+            {
+                CompanyList = _unitOfWork.Company.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
+                RoleList = _roleManager.Roles.Where(r => r.Name != SD.Role_User_Indi).Select(r => new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Name
+                })
+            };
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -124,8 +148,6 @@ namespace BookStore.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Indi));
                     }
 
-                    await _userManager.AddToRoleAsync(user, SD.Role_Admin);
-
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     //var callbackUrl = Url.Page(
@@ -143,6 +165,20 @@ namespace BookStore.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        //This is when the indivisual user is registering and the admin didnt 
+                        //select a role because for indivisual users there wont be any role select list
+                        if (user.Role is null)
+                        {
+                            await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
+                        }
+                        else
+                        {
+                            if (user.CompanyId > 0)
+                            {
+                                await _userManager.AddToRoleAsync(user, SD.Role_User_Comp);
+                            }
+                            await _userManager.AddToRoleAsync(user, user.Role);
+                        }
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
