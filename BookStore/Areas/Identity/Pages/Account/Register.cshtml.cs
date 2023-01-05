@@ -179,8 +179,12 @@ namespace BookStore.Areas.Identity.Pages.Account
                             }
                             await _userManager.AddToRoleAsync(user, user.Role);
                         }
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        if (user.Role == null)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                        return RedirectToAction(nameof(Index),"User");
                     }
                 }
                 foreach (var error in result.Errors)
