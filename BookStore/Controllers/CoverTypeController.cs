@@ -1,9 +1,13 @@
 ﻿using BookStore.Data.Models;
 using BookStore.Data.Repository.Interfaces;
+using BookStore.StaticDetails;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -1,5 +1,7 @@
 ﻿using BookStore.Data.Models;
 using BookStore.Data.Repository.Interfaces;
+using BookStore.StaticDetails;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
     public class UserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

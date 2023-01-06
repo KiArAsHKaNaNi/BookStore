@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
+using BookStore.StaticDetails;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace BookStore.Controllers
 {
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
