@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BookStore.Controllers
@@ -26,7 +27,6 @@ namespace BookStore.Controllers
         public IActionResult Index()
         {
             var products = _unitOfWork.Product.GetAll(includeProperties: "Category, CoverType");
-            
             return View(products);
         }
 

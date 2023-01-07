@@ -19,6 +19,9 @@ namespace BookStore.Data.Repository
             CoverType = new CoverTypeRepository(context);
             Product = new ProductRepository(context);
             Company = new CompanyRepository(context);
+            ShoppingCart = new ShoppingCartRepository(context);
+            OrderDetails = new OrderDetailsRepository(context);
+            OrderHeader = new OrderHeaderRepository(context);
 
         }
 
@@ -29,6 +32,13 @@ namespace BookStore.Data.Repository
         public IProductRepository Product { get; private set; }
 
         public ICompanyRepository Company { get; private set; }
+
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+
+        public IOrderDetailsRepository OrderDetails { get; private set; }
+
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+
         public void Dispose()
         {
             _context.Dispose();

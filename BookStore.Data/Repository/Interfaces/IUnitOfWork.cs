@@ -16,6 +16,10 @@ namespace BookStore.Data.Repository.Interfaces
 
         ICompanyRepository Company { get; }
 
+        IShoppingCartRepository ShoppingCart { get; }
+        IOrderDetailsRepository OrderDetails { get; }
+        IOrderHeaderRepository OrderHeader { get; }
+
         void Save();
 
     }
