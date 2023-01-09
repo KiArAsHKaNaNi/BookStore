@@ -12,6 +12,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using BookStore.StaticDetails;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata;
+using BookStore.Data.Repository.Interfaces;
 
 namespace BookStore.Areas.Identity.Pages.Account
 {
@@ -21,14 +26,17 @@ namespace BookStore.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, 
+        public LoginModel(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         [BindProperty]
@@ -76,6 +84,8 @@ namespace BookStore.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
+
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         
             if (ModelState.IsValid)
@@ -86,6 +96,18 @@ namespace BookStore.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user is not null)
+                    {
+                        //Session for home index page
+                        var count = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == user.Id).ToList().Count();
+                        HttpContext.Session.SetInt32(SD.SessionShoppingCart, count);
+                    }
+
+
+                    //var userId = user.Id;
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

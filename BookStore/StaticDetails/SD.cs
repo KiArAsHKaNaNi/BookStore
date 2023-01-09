@@ -8,6 +8,8 @@
         public const string Role_Admin = "Admin";
         public const string Role_Employee = "Employee";
 
+        public const string SessionShoppingCart = "Shopping cart session";
+
         public static double GetPriceBaseOnQuantity(double quantity, double price, double price50, double price100)
         {
             if (quantity < 50)

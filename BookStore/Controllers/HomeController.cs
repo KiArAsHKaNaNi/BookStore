@@ -3,7 +3,9 @@ using BookStore.Data.Data;
 using BookStore.Data.Models;
 using BookStore.Data.Repository.Interfaces;
 using BookStore.Models;
+using BookStore.StaticDetails;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -29,6 +31,17 @@ namespace BookStore.Controllers
         public IActionResult Index()
         {
             var products = _unitOfWork.Product.GetAll(includeProperties: "Category, CoverType");
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim is not null)
+            {
+                //Session for home index page
+                var count = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == claim.Value).ToList().Count();
+                HttpContext.Session.SetInt32(SD.SessionShoppingCart, count);
+            }
+
             return View(products);
         }
 
@@ -71,6 +84,12 @@ namespace BookStore.Controllers
                     _unitOfWork.ShoppingCart.Update(shoppingCartFromDb);
                 }
                 _unitOfWork.Save();
+
+                //Session for home details page
+                var count = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == shoppingCart.ApplicationUserId).ToList().Count();
+                HttpContext.Session.SetInt32(SD.SessionShoppingCart, count);
+
+
                 return RedirectToAction(nameof(Index));
             }
             else

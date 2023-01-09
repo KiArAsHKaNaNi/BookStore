@@ -1,4 +1,6 @@
 ﻿@using BookStore.StaticDetails
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +68,19 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="User" asp-action="Index">User</a>
+                            </li>
+                        }
+
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionShoppingCart) is not null)
+                        {
+                            <li style="color:white">
+                                <a class="nav-link" asp-controller="User" asp-action="Index">Cart: @HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionShoppingCart)</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li style="color:white">
+                                <a class="nav-link" asp-controller="User" asp-action="Index">Cart: 0</a>
                             </li>
                         }
 
