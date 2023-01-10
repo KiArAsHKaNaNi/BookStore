@@ -192,6 +192,19 @@ namespace BookStore.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            Input = new InputModel
+            {
+                CompanyList = _unitOfWork.Company.GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
+                RoleList = _roleManager.Roles.Where(r => r.Name != SD.Role_User_Indi).Select(r => new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Name
+                })
+            };
 
             // If we got this far, something failed, redisplay form
             return Page();

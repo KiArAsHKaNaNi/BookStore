@@ -74,13 +74,13 @@
                         @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionShoppingCart) is not null)
                         {
                             <li style="color:white">
-                                <a class="nav-link" asp-controller="User" asp-action="Index">Cart: @HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionShoppingCart)</a>
+                                <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Cart: @HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionShoppingCart)</a>
                             </li>
                         }
                         else
                         {
                             <li style="color:white">
-                                <a class="nav-link" asp-controller="User" asp-action="Index">Cart: 0</a>
+                                <a class="nav-link" >Cart: 0</a>
                             </li>
                         }
 
