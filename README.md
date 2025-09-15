@@ -1,17 +1,25 @@
-# Simple Bookstore App
+📚 Bookstore Management System
 
-A basic bookstore management web app built using ASP.NET Core MVC and Entity Framework Core. This project was created by following a tutorial to practice and learn .NET web development.
+A simple ASP.NET Core MVC web application built to demonstrate CRUD operations, database integration, and front-end interactivity.
+This project is part of my practice and preparation for junior .NET developer roles.
 
-## 🔧 Technologies
+🚀 Features
+🧑‍💻 User-friendly interface with Bootstrap styling
+📖 Manage books (add, edit, delete, view)
+👥 Manage customers and their information
+📝 Track visits/orders (basic implementation)
+🔄 Entity Framework Core for database operations
+📊 DataTables.js for advanced table search, pagination, and sorting
+🎉 SweetAlert2 for interactive alerts and confirmations
+⚡ Asynchronous operations with EF Core & MVC pattern
 
-- ASP.NET Core MVC  
-- Entity Framework Core (Code First)  
-- SQL Server  
-- SweetAlert for notifications  
-- DataTables for table filtering and paging
+🛠️ Tech Stack
+Backend: ASP.NET Core MVC, Entity Framework Core
+Database: SQL Server (Code-First Migrations)
+Frontend: Bootstrap, DataTables.js, SweetAlert2
+Other: LINQ, async/await, dependency injection
 
-## 📌 Features
-
-- Book category and product management  
-- CRUD operations with user-friendly modals  
-- Table sorting, search, and paging with DataTables
+⚠️ Notes & Limitations
+💳 Payment integration is NOT implemented (for demo purposes only)
+🔒 Not intended for production use (no authentication/authorization)
+🧪 Built for learning & showcasing ASP.NET Core skills
